@@ -8,6 +8,12 @@
     <script  src="Scripts/jquery-ui.js"></script>
     <link href="Scripts/jquery-ui.css" rel="stylesheet" />
     <title></title>
+    <style>
+        .hidden
+        {
+        display:none;
+        }   
+    </style>
 </head>
 <script>
     function ShowPopupConfirm(message) {
@@ -33,6 +39,29 @@
             });
         });
     };
+    function ShowPopupConfirm2(message) {
+        $(function () {
+            $("#dialog-confirm2").html(message)
+            $("#dialog-confirm2").dialog({
+                resizable: false,
+                height: "auto",
+                width: 400,
+                modal: true,
+                title: "Check Again",
+                buttons: {
+                    "Confirm": function () {
+                        $(this).dialog("close");
+                        //__doPostBack('<%= Button3.UniqueID %>', 'OnClick');
+                        $("[id*=btnhidden]").click();
+                        //return true;
+                    },
+                    Cancel: function () {
+                        $(this).dialog("close");
+                    }
+                }
+            });
+        });
+    };
     function ShowPopup(message) {
         $(function () {
         $("#dialog-message").html(message);
@@ -47,18 +76,113 @@
         });
       } );
     };
+    function rgb2hex(rgb) {
+        rgb = rgb.match(/^rgba?[\s+]?\([\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?,[\s+]?(\d+)[\s+]?/i);
+        return (rgb && rgb.length === 4) ? "#" +
+         ("0" + parseInt(rgb[1], 10).toString(16)).slice(-2) +
+         ("0" + parseInt(rgb[2], 10).toString(16)).slice(-2) +
+         ("0" + parseInt(rgb[3], 10).toString(16)).slice(-2) : '';
+    }
+    $(function () {
+        //Assign Click event to Button.
+        $("#btnGet").click(function () {
+            var message = "Id Name                  Country\n";
+
+            //Loop through all checked CheckBoxes in GridView.
+            $("#Table1 input[type=checkbox]:checked").each(function () {
+                var row = $(this).closest("tr")[0];
+                var color = $(this).closest("tr").css("background-color");// get this in whatever way.
+                var hex = rgb2hex(color).toUpperCase();
+                //alert(hex);
+                if (hex === "#00FFB9") {
+                    message += row.cells[1].innerHTML;
+                    message += "   " + row.cells[2].innerHTML;
+                    message += "   " + row.cells[3].innerHTML;
+                    //alert(row.bgColor);
+                    message += "\n";
+                }
+            });
+            //Display selected Row data in Alert Box.
+            alert(message);
+            //alert(color);
+            return false;
+        });
+    });
+    function btnGetClick() {
+        $("#Table1 input[type=checkbox]:checked").each(function () {
+            var message = null;
+            var row = $(this).closest("tr")[0];
+            var color = $(this).closest("tr").css("background-color");// get this in whatever way.
+            var hex = rgb2hex(color).toUpperCase();
+            //alert(hex);
+            if (hex === "#00FFB9") {
+                message += row.cells[1].innerHTML;
+                message += "   " + row.cells[2].innerHTML;
+                message += "   " + row.cells[3].innerHTML;
+                //alert(row.bgColor);
+                message += "\n";
+            }
+            if(message !=null)
+            {
+                ShowPopupConfirm2(message);
+            }
+            else
+            {
+                $("[id*=btnhidden]").click();
+            }
+        });
+        // this will prevent the postback, equivalent to: event.preventDefault();
+        return false;
+    }
+
 </script>
 <body>
-    <div id="dialog-confirm" title="Empty the recycle bin?" style="display: none">
     <p><span class="ui-icon ui-icon-alert" style="float:left; margin:12px 12px 20px 0;"></span>Do you sure layer choosed to create?</p>
     </div>
     <form id="form1" runat="server">
+    <table cellspacing="0" rules="all" border="1" id="Table1" style="border-collapse: collapse;">
+        <tr>
+            <th>&nbsp;</th>
+            <th style="width:80px">Customer Id</th>
+            <th style="width:120px">Name</th>
+            <th style="width:120px">Country</th>
+        </tr>
+        <tr>
+            <td><input type="checkbox"/></td>
+            <td>1</td>
+            <td>John Hammond</td>
+            <td>United States</td>
+        </tr>
+        <tr style="background-color:#00FFB9;padding:40px 40px">
+            <td><input type="checkbox"/></td>
+            <td>2</td>
+            <td>Mudassar Khan</td>
+            <td>India</td>
+        </tr>
+        <tr>
+            <td><input type="checkbox"/></td>
+            <td>3</td>
+            <td>Suzanne Mathews</td>
+            <td>France</td>
+        </tr>
+        <tr style="background-color:#CC3333;padding:40px 40px">
+            <td><input type="checkbox"/></td>
+            <td>4</td>
+            <td>Robert Schidner</td>
+            <td>Russia</td>
+        </tr>
+    </table>
     <div>
         <asp:TextBox ID="TextBox1" runat="server"></asp:TextBox><asp:Button ID="Button1" runat="server" Text="Button" OnClick="Button1_Click"  />
     </div>
     <div style="position: absolute;  bottom: 0;" ><asp:Button ID="Button2" runat="server" Text="Button"  OnClick="Button2_Click" Visible="False" /></div>
-    <div id="dialog-message" style="display: none">
+    <div id="dialog-message" style="display: none"></div>
+    <div id="dialog-confirm" title="Empty the recycle bin?" style="display: none">
     </div>
+    <div id="dialog-confirm2" title="Empty the recycle bin?" style="display: none">
+    </div>
+        <asp:Button ID="Button3" runat="server" Text="Button" OnClientClick="return btnGetClick()" />
+        <asp:Button id="btnhidden" runat="server" cssClass=hidden OnClick="btnhidden_Click"/>
     </form>
 </body>
 

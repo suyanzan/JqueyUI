@@ -37,4 +37,36 @@ public partial class JQUERY_UI_TESR : System.Web.UI.Page
             ScriptManager.RegisterClientScriptBlock(this, GetType(), "Popup", "ShowPopup('" + ex.Message + "');", true);
         }
     }
+
+
+    protected void Button3_Click(object sender, EventArgs e)
+    {
+        //try
+        //{
+        //    //Button2.Enabled = false;
+        //    int a = 100, b = 4;
+        //    int c = a / 0 + b;
+        //}
+        //catch (Exception ex)
+        //{
+        //    ScriptManager.RegisterClientScriptBlock(this, GetType(), "Popup", "ShowPopup('" + ex.Message + "');", true);
+        //}
+    }
+
+
+
+    protected void btnhidden_Click(object sender, EventArgs e)
+    {
+        try
+        {
+            //Button2.Enabled = false;
+            int a = 100, b = 4;
+            int c = a / 0 + b;
+        }
+        catch (Exception ex)
+        {
+            ScriptManager.RegisterClientScriptBlock(this, GetType(), "Popup", "ShowPopup('" + ex.Message + "');", true);
+        }
+
+    }
 }
