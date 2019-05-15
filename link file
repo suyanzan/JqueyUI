@@ -8,3 +8,10 @@ https://www.w3schools.com/code/tryit.asp?filename=G3U0609KNLVK
 https://www.w3schools.com/code/tryit.asp?filename=G3UAV2C671SC
 //完整版判斷顏色同時判斷checked->新增style版本
 https://www.w3schools.com/code/tryit.asp?filename=G42665F3JL0C
+下面的格式可以在IE中正常执行，但是不能在Firefox和Chrome中执行：
+
+window.location.href("http://stackoverflow.com");
+
+下面的格式可以以上三个浏览器中全部正常执行：
+
+window.location.href = "http://stackoverflow.com";
