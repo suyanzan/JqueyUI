@@ -1,0 +1,18 @@
+https://forums.asp.net/t/1614583.aspx?HttpWebRequest+download+file+from+web+server
+
+HttpWebRequest request = (HttpWebRequest)WebRequest.Create(url);
+request.Credentials = userNetworkCredentials;
+request.Method = "PUT";
+request.ContentType = "application/octet-stream";
+request.ContentLength = data.Length;
+Stream stream = request.GetRequestStream();
+stream.Write(data,0,data.Length);
+stream.Close();
+response = (HttpWebResponse)request.GetResponse();
+StreamReader reader = new StreamReader(response.GetResponseStream());
+temp = reader.ReadToEnd();
+reader.Close();
+
+http://www.blueshop.com.tw/board/FUM20041006161839LRJ/BRD2010050710575306K.html
+System.Net.WebRequest webRequest = WebRequest.Create(url);   
+webRequest.Credentials = new System.Net.NetworkCredential("userName", "password"); 
