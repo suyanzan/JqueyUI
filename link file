@@ -15,3 +15,8 @@ window.location.href("http://stackoverflow.com");
 下面的格式可以以上三个浏览器中全部正常执行：
 
 window.location.href = "http://stackoverflow.com";
+FTPConnection
+http://www.petertorpey.com/files/ae/scripts/FTPConnection.jsx
+StackOverflow
+FTP connection and copying file using Javascript
+https://stackoverflow.com/questions/34703594/ftp-connection-and-copying-file-using-javascript
