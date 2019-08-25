@@ -16,6 +16,43 @@
     </style>
 </head>
 <script>
+    //var fso = new ActiveXObject("Scripting.FileSystemObject");
+    //var f1 = fso.OpenTextFile("I:\RD73.CTOC", true);
+    //alert("File last modified: " + f1.DateLastModified);
+    function showBlockUI() {
+        $.blockUI({
+            message: '<table><tr><td valign="middle" style="height:50px" class="main"><img src="Img/ajax-loader.gif" /> 處理中,請稍候...</td></tr></table>',
+            css: {
+                width: '265px',
+                height: '55px'
+            }
+        });
+    }
+    function checkfile() {
+        var myObject;
+        myObject = new ActiveXObject("Scripting.FileSystemObject");
+        if (myObject.FileExists("I:\\RD73.CTOC")) {
+            alert("File Exists");
+        } else {
+            alert("File doesn't exist");
+        }
+    }
+    function readAll() {
+        var fso = new ActiveXObject("Scripting.FileSystemObject");
+        var txtFile = fso.OpenTextFile("kategorije.txt", 1, false, 0);
+
+        var fText = txtFile.ReadAll();
+        txtFile.Close();
+        fso = null
+        var array = fText.split("\r\n");
+        var sel = document.getElementById("dropdown2");
+        for (var i = 0; i < array.length; i++) {
+            var opt = document.createElement("option");
+            opt.innerHTML = array[i];
+            opt.value = array[i];
+            sel.appendChild(opt);
+        }
+    }
     function ShowPopupConfirm(message) {
         $(function () {
             $("#dialog-confirm").dialog({
@@ -183,7 +220,10 @@
     </div>
         <asp:Button ID="Button3" runat="server" Text="Button" OnClientClick="return btnGetClick()" />
         <asp:Button id="btnhidden" runat="server" cssClass=hidden OnClick="btnhidden_Click"/>
+        <asp:FileUpload ID="FileUpload1" runat="server" /><asp:Button ID="Button4" runat="server" Text="LockExcel" OnClick="Button4_Click" /><asp:Button ID="Button5" runat="server" Text="UnLockExcel" OnClick="Button5_Click" />
     </form>
+    <asp:Label ID="Label1" runat="server" Text="Label"></asp:Label>
+     <input type="button" value="Check file" onClick="checkfile()"/>
 </body>
 
 </html>

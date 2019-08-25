@@ -1,5 +1,7 @@
-﻿using System;
+﻿using ClassLibrary1;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Web;
 using System.Web.UI;
@@ -68,5 +70,55 @@ public partial class JQUERY_UI_TESR : System.Web.UI.Page
             ScriptManager.RegisterClientScriptBlock(this, GetType(), "Popup", "ShowPopup('" + ex.Message + "');", true);
         }
 
+    }
+
+    protected void Button4_Click(object sender, EventArgs e)
+    {
+        string saveDir = @"Uploads\";
+        //因為反斜線會被解析,使用@方便閱讀
+        //還是可寫成String saveDir= "\\FileUpload\\"; 
+        //string saveDir = "\\FileUpload\\";
+        string appPath = Request.PhysicalApplicationPath;//取得目錄完整位址
+        string err = "";
+        if (FileUpload1.HasFile)
+        {
+            string savePath = appPath + saveDir +
+                Server.HtmlEncode(FileUpload1.FileName);
+            FileUpload1.SaveAs(savePath);
+            FileUpload1.Dispose();
+            bool lockexcel= Class1.LockExcelInterop(savePath, 1, "1111",out err);
+            if(lockexcel==true&& err=="")
+            {
+                Label1.Text = "lockexcel ok!";
+            }
+            else
+            {
+                Label1.Text = "lockexcel fail!";
+                return;
+            }
+            Label1.Text += "Your file was uploaded successfully.";
+        }
+        else
+        {
+            Label1.Text  = "You did not specify a file to upload.";
+        }
+    }
+
+    protected void Button5_Click(object sender, EventArgs e)
+    {
+        string saveDir = @"Uploads\";
+        string appPath = Request.PhysicalApplicationPath;//取得目錄完整位址
+        string savePath = appPath + saveDir +Server.HtmlEncode(FileUpload1.FileName);
+        string err = "";
+        bool lockexcel = Class1.UnLockExcelInterop(savePath, 1, "1111", out err);
+        if (lockexcel == true && err == "")
+        {
+            Label1.Text = "Unlockexcel ok!";
+        }
+        else
+        {
+            Label1.Text = "Unlockexcel fail!";
+            return;
+        }
     }
 }
